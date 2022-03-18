@@ -5,8 +5,8 @@ const UserLink = ({user, handleLogout}) => {
   return (
     <p className='drop-nav'>
       <Link className='link' to='/' onClick={handleLogout}>
-            Logout
-          </Link>
+        LOGOUT
+      </Link>
       {/* <Link className='link' to='#'>
         <img src={user.avatar} alt='' /> {user.name}{' '}
         <i className='fas fa-angle-down'></i>

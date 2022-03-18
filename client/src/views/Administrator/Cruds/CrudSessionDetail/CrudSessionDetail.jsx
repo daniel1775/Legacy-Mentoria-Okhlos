@@ -185,7 +185,7 @@ const petitionPost=async()=>{
  
   return (
   <div>
-    <Sidebar/>
+    {/* <Sidebar/> */}
      <SearchContainer h1={"TABLA DE SESIONES ASIGNADAS "} placeholder={"Buscar Una Sesión  "}
      onClick={()=>openedClosedModalInsertar()}/>
       <Table th={Articles.map((e) =>{

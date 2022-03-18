@@ -12,7 +12,7 @@
 }
 .Container h1{
    text-align: center;
-    color: #92C149;
+    color: #4CAF50;
     font-family: Gilroy-ExtraBold;
     font-size:1.5rem;
 }
@@ -25,7 +25,7 @@
 }
 .Container button {
     width:50%;
-    background-color: #FFCC02;
+    background-color: #ffdf5f;
     color: black;
     padding: 0.5rem;
     border-radius: 0.4rem;
@@ -33,7 +33,7 @@
 }
 
 .Container button:hover{
-    background-color:#92C149 ;
+    background-color:#FFCC02; 
 }
 @media (min-width: 350px ) {
     

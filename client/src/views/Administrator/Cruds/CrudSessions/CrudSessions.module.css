@@ -1,5 +1,6 @@
 .container{
     font-family:Gilroy-Light; 
+    padding-top: 5%;
 }
 .row td{
     width: 100vw;
@@ -41,7 +42,11 @@ td button{
     }
 }
 @media (min-width: 780px ) {
-    
+    .container{
+        font-family:Gilroy-Light; 
+        padding-top: 10%;
+    }
+
     .column ,.row  { 
        
         display: flex;

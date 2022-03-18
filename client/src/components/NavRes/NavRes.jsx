@@ -3,55 +3,56 @@ import {useSelector} from 'react-redux'
 import {Link} from 'react-router-dom'
 import Image from '../assets/images/programate-solo-color.png';
 import './NavRes.css';
+// UserLink is NavBar component
 import UserLink from '../Navbar/UserLink'
 import styled from "styled-components";
 
 const NavRes = () => {
-    const auth = useSelector(state => state.auth)
+  const auth = useSelector(state => state.auth)
 
-    const {user, isLogged} = auth
+  const {user, isLogged} = auth
 
-    const handleLogout = async () => {
-        try {
-            // await axios.get('/user/logout')
-            localStorage.removeItem('firstLogin')
-            localStorage.removeItem('loggedAgoraUser')
-            localStorage.removeItem('isLogged')
-            window.location.href = "/";
-        } catch (err) {
-            window.location.href = "/";
-        }
+  const handleLogout = async () => {
+    try {
+      // await axios.get('/user/logout')
+      localStorage.removeItem('firstLogin')
+      localStorage.removeItem('loggedAgoraUser')
+      localStorage.removeItem('isLogged')
+      window.location.href = "/";
+    } catch (err) {
+      window.location.href = "/";
     }
+  }
 
-    const transForm = {
-        transform: isLogged ? "translateY(-5px)" : 0
-    }
+  const transForm = {
+    transform: isLogged ? "translateY(-5px)" : 0
+  }
 
-    const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <Nav>
-            <Logo href="">
-                <img className="LogoNavbar" src={Image} alt="programate" />
-            </Logo>
-            <Hamburger onClick={() => setIsOpen(!isOpen)}>
-                <span />
-                <span />
-                <span />
-            </Hamburger>
-            <Menu isOpen={isOpen} isLogged={isLogged}>
-                <MenuLink to="/student-assignment-sessions">Sesiones Asignadas</MenuLink>
-                <MenuLink to="/student-sessions">Sesiones Habilitadas</MenuLink>
-                {/* <MenuLink to="">Formularios</MenuLink>
-                <MenuLink to="">Informes</MenuLink> */}
-                <div style={transForm}>
-                        {
-                            isLogged
-                            ? <UserLink user = {user} handleLogout = {handleLogout}/>
-                            :<p style={{display: 'none'}}><Link to="/login"><i className="login">Iniciar sesión</i> </Link></p>
-                        }
-                </div>
-            </Menu>
+      <Logo href="">
+        <img className="LogoNavbar" src={Image} alt="programate" />
+      </Logo>
+      <Hamburger onClick={() => setIsOpen(!isOpen)}>
+        <span />
+        <span />
+        <span />
+      </Hamburger>
+      <Menu isOpen={isOpen} isLogged={isLogged}>
+        <MenuLink to="/student-assignment-sessions">Sesiones Asignadas</MenuLink>
+        <MenuLink to="/student-sessions">Sesiones Habilitadas</MenuLink>
+        {/* <MenuLink to="">Formularios</MenuLink>
+        <MenuLink to="">Informes</MenuLink> */}
+        <div style={transForm}>
+          {
+            isLogged
+            ? <UserLink user = {user} handleLogout = {handleLogout}/>
+            :<p style={{display: 'none'}}><Link to="/login"><i className="login">Iniciar sesión</i> </Link></p>
+          }
+        </div>
+      </Menu>
     </Nav>
   );
 };

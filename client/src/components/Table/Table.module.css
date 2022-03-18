@@ -1,30 +1,40 @@
 
 .Crud{
-    background-color: #D7D7D7;
-    
+   /*  background-color: #8f8f8f; */
+    width: 80vw;
    
 }
 table tr:nth-child(even){
-  background-color: #FEFEFE;
+  background-color: #ffffff;
   
 }
-
 
 table{
 
-
- text-align:center;
+ text-align:flex start;
   border-collapse: collapse;
 
 }
-@media (min-width: 780px ) {
+@media only screen and (min-width: 1024px ) {
     
+.Crud{
+  
+  width: 90vw;
+  position: relative;
+  left: 50px;
+ 
+}
   tbody tr:hover{
-    background-color: #92C149;
+    background-color: #cccccc;
+    
+  }
+  .th{
+    color: aqua;
   }
   
  table,table thead,table tbody{
-   width: 100%;
+   width: 80vw;
+   
    
  }
 

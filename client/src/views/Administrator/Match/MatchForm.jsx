@@ -1,65 +1,32 @@
+
 import { useState } from 'react'
-import Styles from './matchform.css'
-import Card from '../../../components/Card/Card'
-import Select from 'react-select'
 import axios from 'axios'
-import Sidebar from '../../../components/Sidebar/Sidebar'
+
+import ListStudentMentor from './components/ListStudentMentor/ListStudentMentor';
+import Cohort from './components/Cohort/Cohort';
 
 const MatchForm = () => {
-  let cohort = 0
-  let program = ""
+  let program = "Programate";
   const [students, setStudents] = useState([])
   const [mentors, setMentors] = useState([])
+  // permite controlar que componente se va a renderizar: <ListStudentMentor/> ó <ProgramAndCohort/>
   const [chosenProgram, setChosenProgram] = useState(false)
+  // almacena true si el match se realizo con éxito
   const [done, setDone] = useState(false)
+  // almacena los datos de estudiantes y mentores una vez realizado el match
+  const [match, setMatch] = useState([])
+  const [cohort, setCohort] = useState(0);
 
   const baseUrl = 'https://fathomless-bastion-33135.herokuapp.com'
 
+  // almacena el valor escogido en la seccion de cohorte (corregir)
   const handleTypeSelect = e => {
-    cohort = e.label
-    console.log(cohort)
+    setCohort(e.label) 
   };
-
-  const handleSelectPrograms = i => {
-    program = i.label
-    console.log(program)
-  };
-
-  const cohorte = [
-    {
-      value: 1,
-      label: 1
-    },
-    {
-      value: 2,
-      label: 2
-    },
-    {
-      value: 3,
-      label: 3
-    },
-    {
-      value: 4,
-      label: 4
-    }
-  ]
-
-  const programs = [
-    {
-      value: 'Programate',
-      label: 'Programate'
-    },
-    {
-      value: 'Administración de Empresas',
-      label: 'Administración de Empresas'
-    }
-  ]
 
   const getValuesFinal = async () => {
     try {
       const res = await axios.get(`${baseUrl}/api/match/students/${program}/${cohort}`)
-      // console.log(res)
-      console.log(cohort)
       if (res.status === 200) {
         setStudents(res.data)
       }
@@ -69,10 +36,10 @@ const MatchForm = () => {
     getValuesMentor()
   }
 
+  // En esta funcion se consultan los mentores
   const getValuesMentor = async () => {
     try {
       const resp = await axios.get(`${baseUrl}/api/match/mentor/${program}/${cohort}`)
-      // console.log(resp)
       if (resp.status === 200) {
         setChosenProgram(true)
         setMentors(resp.data)
@@ -82,9 +49,7 @@ const MatchForm = () => {
     }
   }
 
-  const [match, setMatch] = useState([])
-  
-
+  // logica del match linea 52 a 162
   let resultInterest = 0
   let resultAge = 0
   let competencies = 0
@@ -98,7 +63,6 @@ const MatchForm = () => {
     for (let i = 0; i < 3; i++) {
       // const result = students[est].interestsStudent[i].includes(mentors[m].interestsMentor)
       const result = mentors[m].interestsMentor.includes(students[est].interestsStudent[i])
-      console.log("Result: " + result)
       if (result === true) {
         if (count === 0) {
           count = 5
@@ -107,7 +71,7 @@ const MatchForm = () => {
         }
       }
       // debugger
-    } console.log(count)
+    }
 
     return count
   }
@@ -162,155 +126,57 @@ const MatchForm = () => {
     return count
   }
 
-  const Match = () => {
-    for (let est = 0; est < students.length; est++) {
-      for (let m = count; m < mentors.length; m++) {
-        // Interests the student and mentor
-        resultInterest = Interests(est, m)
-        console.log(resultInterest)
-        // Actual age the student and mentor
-        resultAge = Age(est, m)
-        console.log(resultAge)
-        // Competencies the student and mentor
-        competencies = Competencies(est, m)
-        console.log(competencies)
-        // Gender preference 
-        gender = Gender(est, m)
-        console.log(gender)
-        // Total
-        total = resultInterest + resultAge + competencies + gender
-        console.log("Total" + total)
-        console.log(students[est].user_id.name + "-" + mentors[m].user_id.name)
-        if (total > 50) {
-          match.push({
-            nameEstudent: students[est].user_id.name,
-            nameMentor: mentors[m].user_id.name
-          })
-          count += 1
-          break
-        }
-        // debugger
+  function findHighScore(possibleMentors){
+    let mayor = possibleMentors[0];
+    for(let i=1 ; i<possibleMentors.length ; i++){
+      if(mayor.score < possibleMentors[i].score){
+        mayor =  possibleMentors[i];
       }
     }
-    console.log("El listado del Match")
-    console.log(match)
+    return mayor.mentor.user_id.name;
+  }
+
+  //Funcion que hace el match
+  const calculateMatch = () => {
+    for (let est = 0; est < students.length; est++) {
+      let possibleMentors = [];
+      for (let m = count; m < mentors.length; m++) {
+        resultInterest = Interests(est, m)
+        resultAge = Age(est, m)
+        competencies = Competencies(est, m)
+        gender = Gender(est, m)
+
+        total = resultInterest + resultAge + competencies + gender
+
+        possibleMentors.push({
+          score: total, 
+          mentor: mentors[m]
+        });
+      }
+      setMatch(prev => [...prev, {
+        nameEstudent: students[est].user_id.name,
+        nameMentor: findHighScore(possibleMentors)
+      }]);
+    }
     setDone(true)
   }
-    
-    
-  console.log(students)
 
-  const ListStudentMentor = () => {
-    return(
-      <div>
-      <Sidebar/>
-          <div className="listStudent-Container">
-            <h2 className="listStudent-title">Lista de Estudiantes</h2>
-            <table>
-              <tr className="listStudent-tr">
-                <th className="listStudent-th"> </th>
-                <th className="listStudent-th">Nombre</th>
-                <th className="listStudent-th">Apellido</th>
-                
-              </tr>
-              
-            {students.map((e, index) => {
-              return ( 
-                <tr className="listStudent-tr-map" key={e.id}>
-                    <td className="td-number">{index + 1}</td>
-                    <td className="td-data">{e.user_id.name}</td>
-                    <td className="td-data">{e.user_id.lastName}</td>
-                </tr> 
-              )
-            })}
-            </table>  
-          </div>
-          <div className="listStudent-Container">
-            <h2 className="listStudent-title mg-top">Lista de Mentores</h2>
-            <table>
-              <tr className="listStudent-tr">
-                <th className="listStudent-th"> </th>
-                <th className="listStudent-th">Nombre</th>
-                <th className="listStudent-th">Apellido</th>
-                
-              </tr>
-              
-            {mentors.map((e, index) => {
-              return ( 
-                <tr className="listStudent-tr-map" key={e.id}>
-                    <td className="td-number">{index + 1}</td>
-                    <td className="td-data">{e.user_id.name}</td>
-                    <td className="td-data">{e.user_id.lastName}</td>
-                </tr> 
-              )
-            })}
-            </table> 
-          </div>
-          {done && 
-          <div className="listStudent-Container margin-bottom">
-            <h2 className="listStudent-title mg-top">Match Estudiante Mentor</h2>
-            <table>
-              <tr className="listStudent-tr">
-                <th className="listStudent-th"> </th>
-                <th className="listStudent-th">Estudiante</th>
-                <th className="listStudent-th">Mentor</th>
-                
-              </tr>
-              
-            {match.map((e, index) => {
-              return ( 
-                <tr className="listStudent-tr-map" key={e.id}>
-                    <td className="td-number">{index + 1}</td>
-                    <td className="td-data">{e.nameEstudent}</td>
-                    <td className="td-data">{e.nameMentor}</td>
-                </tr> 
-              )
-            })}
-            </table> 
-          </div>
-          }
-          <button style={{display: done ? 'none' : 'block'}} onClick={Match}>Hacer Match</button>
-          
-    </div>
-    )
-  }
-  const ProgramAndCohort = () => {
-
-    return (
-      <div className={Styles.contenedor}>
-        <Sidebar/>
-        <div className={Styles.heder}></div>
-
-        <Card
-          container={
-            <>
-              <h3>Elige la cohorte y el programa para realizar el Match</h3>
-              <p>Elige la cohorte</p>
-
-              <Select
-                name='cohorte'
-                options={cohorte} // Options to display in the dropdown
-                onChange={handleTypeSelect}
-              />
-
-              <p>Elige el programa.</p>
-
-              <Select
-                name='programs'
-                options={programs} // Options to display in the dropdown
-                onChange={handleSelectPrograms}
-              />
-
-              <br />
-            </>
-          }
-          bottom={<button onClick={getValuesFinal}>Aceptar</button>}
-        />
-      </div>
-    )
-  }
-
-  return <>{chosenProgram ? <ListStudentMentor /> : <ProgramAndCohort />}</>
+  return (
+    <>
+      {chosenProgram ? 
+      <ListStudentMentor 
+        students={students}
+        mentors={mentors}
+        done={done}
+        match={match}
+        calculateMatch={calculateMatch}
+      /> : 
+      <Cohort
+        handleTypeSelect={handleTypeSelect}
+        getValuesFinal={getValuesFinal}
+      />}
+    </>
+  )
 }
 
 export default MatchForm

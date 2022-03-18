@@ -6,7 +6,7 @@
   align-items: center;
   height: 100vh;
   background-color: #fff9da;
-  margin-top: 82px;  
+  padding-top: 10%;  
 }
 .container-login-page {
   height: 80vh;
@@ -77,6 +77,10 @@
 }
 /* ------------- MEDIA QUERIES --------------- */
 @media (max-width: 300px) {
+  .container-login-main {
+    padding-top: 5%;
+  }
+  
   .button-login {
     margin: 20px auto;
   }

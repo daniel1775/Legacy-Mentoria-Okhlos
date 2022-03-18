@@ -10,9 +10,9 @@ import Sidebar from './Sidebar.jsx';
 const PanelAdmin = () => {
     return (
         <div>
-          <Navbar/>
-          <CounterCard/>>
-          <Sidebar/>
+          {/* <Navbar/> */}
+          <CounterCard/>
+          {/* <Sidebar/> */}
           <Footer/>
         </div>
     )

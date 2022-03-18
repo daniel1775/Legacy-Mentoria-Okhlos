@@ -2,7 +2,7 @@
     width:70vw;
     height: 100vh;
     background-color: #D7D7D7;
-      
+    padding-top: 5%;
     
 }
 
@@ -110,6 +110,9 @@ button{
 }
 
 @media (min-width:1080px ) {
+    .contenedor{
+        padding-top: 10%;
+    }
 
     .heder p{
        

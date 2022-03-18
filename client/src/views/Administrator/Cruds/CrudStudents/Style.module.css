@@ -1,3 +1,7 @@
+.container{
+    padding-top: 5%;
+}
+
 @font-face {
     font-family:Gilroy-ExtraBold ;
     src: url(./../../../../assets/Fontfamily/Gilroy-ExtraBold.otf);
@@ -21,7 +25,7 @@
     width: 100vw;
     height: 8vh;
     background-color:#FFCC02;
-    color: #010101;
+    color: #000000;
     
 
 }
@@ -33,6 +37,20 @@ td button{
     max-width:200px;
     
     
+    
+}
+
+.update{
+    background-color:transparent;
+    border:none;
+    color:#4caf50;
+    
+}
+
+.delete{
+    background-color:transparent;
+    border:none;
+    color:red;
 }
 .column th,.row td{ 
     height:auto;
@@ -52,7 +70,10 @@ td button{
     }
 }
 @media (min-width: 780px ) {
-    
+    .container{
+        padding-top: 10%;
+    }
+
     .column ,.row  { 
        
         display: flex;
@@ -83,7 +104,7 @@ td button{
     }
     .column{
         padding: 0.9rem;
-        background-color:#FFCC02 ;
+        background-color:#FFCC02 ; 
        
     }
     .row{
